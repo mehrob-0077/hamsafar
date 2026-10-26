@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Регистрация · HamSafar{% endblock %}
+{% block content %}
+<section class="auth-layout"><div class="auth-story"><span class="eyebrow">НАЙДИ СВОЁ МЕСТО В ПУТИ</span><h1>Каждая дорога<br><em>начинается со знакомства.</em></h1><p>Создай аккаунт и раздели поездки с попутчиками.</p><div class="story-route">ДУШАНБЕ <span>········→</span> ХУДЖАНД</div></div>
+<div class="auth-panel"><span class="eyebrow">ПЕРВЫЙ ШАГ</span><h2>Создать аккаунт</h2><p>Для регистрации нужны некоторые данные.</p>
+{% if error %}<div class="form-error">{{ error }}</div>{% endif %}{% if success %}<div class="form-success">{{ success }}</div>{% endif %}
+<form method="post" class="auth-form">{% csrf_token %}
+<label for="username">Имя</label><input id="username" name="username" autocomplete="username" required>
+<label for="email">Электронная почта</label><input id="email" type="email" name="email" autocomplete="email" required>
+<label for="password1">Пароль</label><input id="password1" type="password" name="password1" autocomplete="new-password" required>
+<label for="password2">Повторите пароль</label><input id="password2" type="password" name="password2" autocomplete="new-password" required>
+<button class="button button-primary">Регистрация <span>↗</span></button></form>
+<p class="auth-switch">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p></div></section>
+{% endblock %}

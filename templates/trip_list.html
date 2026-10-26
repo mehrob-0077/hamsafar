@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Поездки · HamSafar{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div><span class="eyebrow">ПОЕЗДКИ</span><h1>Доступные поездки</h1><p>Посмотрите маршрут, дату и свободные места.</p></div>
+    {% if user.is_authenticated %}<a class="button button-primary" href="{% url 'trip_create' %}">+ Объявление о поездке</a>
+    {% else %}<a class="button button-primary" href="{% url 'login' %}">Войти</a>{% endif %}
+</section>
+
+<form method="get" class="search-panel">
+    <label>Откуда<input name="start" value="{{ start }}"></label>
+    <label>Куда<input name="end" value="{{ end }}"></label>
+    <label>Дата<input type="date" name="date" value="{{ date }}"></label>
+    <button class="button button-primary">Найти</button>
+</form>
+
+<div class="list-heading"><span>{{ trips|length }} поездок найдено</span></div>
+<div class="card-grid">
+{% for trip in trips %}
+    <article class="trip-card">
+        <div class="card-top"><span class="tag">ПОЕЗДКА</span><span class="seat-count">{{ trip.seats_available }} свободных мест</span></div>
+        <div class="route"><div><small>ОТПРАВЛЕНИЕ</small><strong>{{ trip.start_location }}</strong></div><span class="route-arrow">→</span><div><small>ПРИБЫТИЕ</small><strong>{{ trip.end_location }}</strong></div></div>
+        {% if trip.description %}<p class="trip-description">{{ trip.description }}</p>{% endif %}
+        <div class="card-bottom"><span>{{ trip.date|date:'d.m.Y · H:i' }}</span><span>{{ trip.user.username|default:trip.user.email }}</span></div>
+
+        {% if user.is_authenticated %}
+            {% if trip.user_id == user.id %}
+                <div class="owner-actions"><a href="{% url 'trip_edit' trip.pk %}">Редактировать</a><a href="{% url 'trip_delete' trip.pk %}">Удалить</a><a href="{% url 'trip_bookings' trip.pk %}">Заявки пассажиров</a></div>
+            {% elif trip.my_booking %}
+                <div class="booking-state">
+                    <span class="booked-label">Статус: {{ trip.my_booking.get_status_display }}</span>
+                    <form method="post" action="{% url 'booking_cancel' trip.my_booking.pk %}">{% csrf_token %}<button class="text-button">Отменить заявку</button></form>
+                </div>
+            {% elif trip.seats_available > 0 %}
+                <div class="booking-form"><span>{{ trip.seats_available }} свободных мест</span><a class="button button-primary" href="{% url 'trip_book' trip.pk %}">Отправить заявку</a></div>
+            {% endif %}
+        {% else %}
+            <div class="booking-form"><span>Войдите, чтобы отправить заявку.</span><a class="button button-primary" href="{% url 'login' %}">Войти</a></div>
+        {% endif %}
+    </article>
+{% empty %}
+    <div class="empty-card"><h3>Поездки не найдены</h3><p>Измени условия поиска или попробуй позже.</p></div>
+{% endfor %}
+</div>
+{% endblock %}

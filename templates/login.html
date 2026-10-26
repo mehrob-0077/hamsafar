@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Войти · HamSafar{% endblock %}
+{% block content %}
+<section class="auth-layout"><div class="auth-story"><span class="eyebrow">ДОБРО ПОЖАЛОВАТЬ</span><h1>Новое путешествие<br><em>ждёт тебя.</em></h1><p>Войди в аккаунт и выбери подходящий маршрут.</p><div class="story-route">ДУШАНБЕ <span>········→</span> ХУДЖАНД</div></div>
+<div class="auth-panel"><span class="eyebrow">ВОЙДИ В АККАУНТ</span><h2>С возвращением.</h2><p>Введи электронную почту и пароль.</p>
+{% if error %}<div class="form-error">{{ error }}</div>{% endif %}{% if success %}<div class="form-success">{{ success }}</div>{% endif %}
+<form method="post" class="auth-form">{% csrf_token %}
+<label for="email">Электронная почта</label><input id="email" type="email" name="email" autocomplete="email" required>
+<label for="password1">Пароль</label><input id="password1" type="password" name="password1" autocomplete="current-password" required>
+<button class="button button-primary">Войти <span>↗</span></button></form>
+<p class="auth-switch">Нет аккаунта? <a href="{% url 'register' %}">Создать аккаунт</a></p></div></section>
+{% endblock %}

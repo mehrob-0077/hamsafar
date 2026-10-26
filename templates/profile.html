@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Профиль · HamSafar{% endblock %}
+{% block content %}
+<section class="form-page"><div class="form-intro"><span class="eyebrow">ВАШ АККАУНТ</span><h1>Мой профиль</h1><p>Обнови данные своего аккаунта.</p></div>
+<form method="post" class="form-panel">{% csrf_token %}{% for field in form %}<div class="field-wrap"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}<button class="button button-primary">Сохранить изменения <span>↗</span></button></form>
+<div class="profile-links"><a href="{% url 'change_pass' %}">Сменить пароль →</a></div></section>
+{% endblock %}

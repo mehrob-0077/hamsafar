@@ -5,8 +5,8 @@ from .maneger import *
 
 
 class CostumUser(AbstractUser):
-    username = models.CharField(max_length=150, blank=True)
-    email = models.EmailField(max_length=200,unique=True)
+    username = models.CharField('Имя', max_length=150, blank=True)
+    email = models.EmailField('Электронная почта', max_length=200, unique=True)
 
     objects = CostumUserManager()
 
@@ -18,8 +18,12 @@ class CostumUser(AbstractUser):
 
 
 class EmailConfirmation(models.Model):
-    user = models.OneToOneField(CostumUser,on_delete=models.CASCADE)
-    token = models.UUIDField(default=uuid.uuid4)
+    user = models.OneToOneField(CostumUser, on_delete=models.CASCADE, verbose_name='Пользователь')
+    token = models.UUIDField('Токен подтверждения', default=uuid.uuid4)
+
+    class Meta:
+        verbose_name = 'Подтверждение электронной почты'
+        verbose_name_plural = 'Подтверждения электронной почты'
 
 
 

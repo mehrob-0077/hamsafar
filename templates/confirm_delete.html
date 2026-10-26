@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Подтверждение удаления · HamSafar{% endblock %}
+{% block content %}
+<section class="confirm-card"><div class="danger-icon">!</div><span class="eyebrow">ЭТО ДЕЙСТВИЕ НЕЛЬЗЯ ОТМЕНИТЬ</span><h1>Подтвердить удаление?</h1>
+{% if kind == 'account' %}<p>Аккаунт {{ object.email }} и связанные с ним объявления будут удалены. Это действие нельзя отменить.</p>{% else %}<p>Объявление «{{ object }}» будет удалено. Это действие нельзя отменить.</p>{% endif %}
+<form method="post" class="form-actions">{% csrf_token %}<a class="button button-quiet" href="{% url back_url %}">Нет, вернуться</a><button class="button button-danger">Да, удалить</button></form></section>
+{% endblock %}

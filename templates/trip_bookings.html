@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Заявки пассажиров · HamSafar{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div><span class="eyebrow">ЗАЯВКИ</span><h1>{{ trip.start_location }} → {{ trip.end_location }}</h1><p>Свободных мест: {{ trip.seats_available }}</p></div>
+    <a class="button button-quiet" href="{% url 'trip_list' %}">Вернуться к поездкам</a>
+</section>
+<div class="booking-list">
+{% for booking in bookings %}
+    <article class="trip-card booking-row">
+        <div><span class="eyebrow">ПАССАЖИР</span><strong>{{ booking.passenger_name }}</strong><small>Пол: {{ booking.get_gender_display }}</small><small>Аккаунт: {{ booking.passenger.email }}</small></div>
+        <span class="seat-count">{{ booking.seats_count }} мест · {{ booking.get_status_display }}</span>
+        {% if booking.status == 'pending' %}
+            <div class="owner-actions">
+                <form method="post" action="{% url 'booking_decide' booking.pk 'accept' %}">{% csrf_token %}<button class="button button-primary">Принять</button></form>
+                <form method="post" action="{% url 'booking_decide' booking.pk 'reject' %}">{% csrf_token %}<button class="button button-quiet">Отклонить</button></form>
+            </div>
+        {% endif %}
+    </article>
+{% empty %}
+    <div class="empty-card"><h3>Пока нет заявок</h3><p>Заявка пассажира появится здесь после отправки.</p></div>
+{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} · HamSafar{% endblock %}
+{% block content %}
+<section class="form-page"><div class="form-intro"><span class="eyebrow">HAMSAFAR · ОБЪЯВЛЕНИЕ</span><h1>{{ title }}</h1><p>Заполни данные, чтобы другие нашли твою поездку.</p></div>
+<form method="post" class="form-panel">{% csrf_token %}
+    {% if form.non_field_errors %}<div class="form-error">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}<div class="field-wrap"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
+    <div class="form-actions"><a class="button button-quiet" href="{% url back_url %}">Отмена</a><button class="button button-primary">Сохранить <span>↗</span></button></div>
+</form></section>
+{% endblock %}

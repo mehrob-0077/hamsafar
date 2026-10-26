@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Заявки · HamSafar{% endblock %}
+{% block content %}
+<section class="page-heading"><div><span class="eyebrow">ПОПУТЧИКИ</span><h1>Заявки на поиск попутчика</h1><p>Посмотри маршрут и свяжись с автором объявления.</p></div>{% if user.is_authenticated %}<a class="button button-primary" href="{% url 'request_create' %}">+ Добавить заявку</a>{% else %}<a class="button button-primary" href="{% url 'login' %}">Войти</a>{% endif %}</section>
+<form method="get" class="search-panel"><label>Откуда<input name="start" value="{{ start }}" placeholder="Место отправления"></label><label>Куда<input name="end" value="{{ end }}" placeholder="Место прибытия"></label><label>Дата<input type="date" name="date" value="{{ date }}"></label><button class="button button-primary">Найти <span>⌕</span></button></form>
+<div class="list-heading"><span>{{ requests|length }} заявок найдено</span><span>Сначала ближайшие заявки</span></div>
+<div class="card-grid">
+{% for item in requests %}<article class="trip-card request-card"><div class="card-top"><span class="tag tag-green">ИЩЕТ ПОПУТЧИКА</span></div><div class="route"><div><small>ОТПРАВЛЕНИЕ</small><strong>{{ item.start_location }}</strong></div><span class="route-arrow">→</span><div><small>ПРИБЫТИЕ</small><strong>{{ item.end_location }}</strong></div></div>{% if item.description %}<p class="trip-description">{{ item.description }}</p>{% endif %}<div class="card-bottom"><span>{{ item.date|date:'d.m.Y · H:i' }}</span><span>{{ item.user.username|default:item.user.email }}</span></div>{% if item.user == user %}<div class="owner-actions"><a href="{% url 'request_edit' item.pk %}">Редактировать</a><a href="{% url 'request_delete' item.pk %}">Удалить</a></div>{% endif %}</article>
+{% empty %}<div class="empty-card"><span class="empty-icon">◎</span><h3>Заявки не найдены</h3><p>Измени фильтры или размести первую заявку.</p></div>{% endfor %}
+</div>
+{% endblock %}

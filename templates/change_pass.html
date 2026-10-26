@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Смена пароля · HamSafar{% endblock %}
+{% block content %}
+<section class="form-page"><div class="form-intro"><span class="eyebrow">БЕЗОПАСНОСТЬ АККАУНТА</span><h1>Изменить пароль</h1><p>Выбери длинный и уникальный пароль.</p></div>
+{% if error %}<div class="form-error">{{ error }}</div>{% endif %}
+<form method="post" class="form-panel">{% csrf_token %}<div class="field-wrap"><label for="old_pass">Старый пароль</label><input id="old_pass" type="password" name="old_pass" required></div><div class="field-wrap"><label for="new_pass">Новый пароль</label><input id="new_pass" type="password" name="new_pass" required></div><div class="field-wrap"><label for="conf_pass">Повтори новый пароль</label><input id="conf_pass" type="password" name="conf_pass" required></div><button class="button button-primary">Обновить пароль <span>↗</span></button></form></section>
+{% endblock %}
